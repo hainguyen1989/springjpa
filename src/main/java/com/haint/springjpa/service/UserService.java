@@ -12,11 +12,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> findAll(){
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public List<User> findByRoleId(Long roleId){
+    public List<User> findByRoleId(Long roleId) {
         return userRepository.findUserByRolesId(roleId);
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }
