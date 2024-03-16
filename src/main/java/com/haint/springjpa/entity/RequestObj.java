@@ -10,4 +10,10 @@ public class RequestObj {
         return username;
     }
 
+    @Override
+    public String toString() {
+        return "RequestObj{" +
+                "username='" + username + '\'' +
+                '}';
+    }
 }

@@ -3,6 +3,8 @@ package com.haint.springjpa;
 import com.haint.springjpa.db.UserRepository;
 import com.haint.springjpa.entity.Role;
 import com.haint.springjpa.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,33 +18,35 @@ import java.util.Set;
 @SpringBootApplication
 public class SpringjpaApplication {
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpringjpaApplication.class, args);
-	}
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	// Run this if app.db.init.enabled = true
-	@Bean
-	@ConditionalOnProperty(prefix = "app", name = "db.init.enabled", havingValue = "true")
-	public CommandLineRunner demoCommandLineRunner() {
-		return args -> {
+    public static void main(String[] args) {
+        SpringApplication.run(SpringjpaApplication.class, args);
+    }
 
-			System.out.println("Start creating sample data.....");
+    // Run this if app.db.init.enabled = true
+    @Bean
+    @ConditionalOnProperty(prefix = "app", name = "db.init.enabled", havingValue = "true")
+    public CommandLineRunner demoCommandLineRunner() {
+        return args -> {
 
-			User u1 = new User("eric.nguyen", "Hanoi", "Nguyen The Hai");
-			User u2 = new User("shirley.trang", "Hanoi", "Hoang Phuong Trang");
+            logger.info("Start creating sample data.....");
 
-			Role r1 = new Role("Role 1");
-			Role r2 = new Role("Role 2");
+            User u1 = new User("eric.nguyen", "Hanoi", "Nguyen The Hai");
+            User u2 = new User("shirley.trang", "Hanoi", "Hoang Phuong Trang");
 
-			u1.setRoles(Set.of(r1, r2));
-			u2.setRoles(Set.of(r2));
+            Role r1 = new Role("Role 1");
+            Role r2 = new Role("Role 2");
 
-			userRepository.saveAll(List.of(u1, u2));
+            u1.setRoles(Set.of(r1, r2));
+            u2.setRoles(Set.of(r2));
 
-			System.out.println("Sample data are created!");
-		};
-	}
+            userRepository.saveAll(List.of(u1, u2));
+
+            logger.info("Sample data are created!");
+        };
+    }
 }

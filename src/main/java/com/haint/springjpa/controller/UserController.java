@@ -4,6 +4,8 @@ import com.haint.springjpa.entity.RequestObj;
 import com.haint.springjpa.entity.ResponseObj;
 import com.haint.springjpa.entity.User;
 import com.haint.springjpa.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private UserService userService;
 
@@ -40,6 +43,8 @@ public class UserController {
                     .setMessages(List.of("No parameters found!"))
                     .build();
         } else {
+            logger.debug("/find {}", requestObj);
+
             if (StringUtils.hasLength(requestObj.getUsername())) {
                 User result = userService.findByUsername(requestObj.getUsername());
                 if (result == null) {
